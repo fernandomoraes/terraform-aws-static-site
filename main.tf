@@ -1,6 +1,6 @@
 provider "aws" {
     region = "us-east-1"
-    alias  = "us-east-1"
+    alias  = "aws_cloudfront"
 }
 
 data "aws_route53_zone" "zone" {
@@ -129,7 +129,7 @@ resource "aws_acm_certificate" "cert" {
     subject_alternative_names = [local.redirect_domain]
     validation_method         = "DNS"
     tags                      = var.tags
-    provider                  = aws.us-east-1 # CloudFront requires certificates in this region.
+    provider                  = aws.aws_cloudfront # CloudFront requires certificates in this region.
 }
 
 resource "aws_route53_record" "cert" {
@@ -144,7 +144,7 @@ resource "aws_route53_record" "cert" {
 resource "aws_acm_certificate_validation" "cert" {
     certificate_arn         = aws_acm_certificate.cert.arn
     validation_record_fqdns = tolist(aws_route53_record.cert.*.fqdn)
-    provider                = aws.us-east-1
+    provider                = aws.aws_cloudfront
 
     timeouts {
       create = "2h"
