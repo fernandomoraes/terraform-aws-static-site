@@ -124,6 +124,7 @@ resource "aws_acm_certificate" "cert" {
     subject_alternative_names = [local.redirect_domain]
     validation_method         = "DNS"
     tags                      = var.tags
+    provider                  = "aws.us-east-1" # CloudFront requires certificates in this region.
 }
 
 resource "aws_route53_record" "cert" {
