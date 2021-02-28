@@ -1,3 +1,8 @@
+provider "aws" {	
+    region = "us-east-1"	
+    alias  = "aws_cloudfront"	
+}
+
 data "aws_route53_zone" "zone" {
     name  = "${local.zone_domain_name}."
 }
